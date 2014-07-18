@@ -3,7 +3,9 @@ package com.mokoversity.mywearapp;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,12 +20,22 @@ import android.support.v4.app.NotificationCompat.WearableExtender;
 
 public class MyActivity extends Activity {
 
+
+    private static IntentFilter mFilterWearableReply;
+    private static BroadcastReceiver mWearableReceiver;
+
+    private static final String ACTION_RESPONSE = "com.mokoversity.example.wearable1.REPLY";
+
+    private MyActivity mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
-        four();
+        mContext = this;
+
+        coupon();
     }
 
     private void zero() {
@@ -119,6 +131,23 @@ public class MyActivity extends Activity {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(0x01, notification);
+    }
+
+
+    private void coupon() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setContentTitle("Coupon")
+                .setContentText("Limited. 30 mins from now !")
+                .setSmallIcon(R.drawable.bg_eliza);
+
+        Intent intent = new Intent(ACTION_RESPONSE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent,
+                PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_CANCEL_CURRENT);
+        builder.setContentIntent(pendingIntent);
+
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(0x07, builder.build());
     }
 
     @Override
