@@ -1,6 +1,7 @@
 package com.mokoversity.mywearapp;
 
 import android.app.Activity;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +19,7 @@ public class MyActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
-        zero();
+        one();
     }
 
     private void zero() {
@@ -33,6 +34,17 @@ public class MyActivity extends Activity {
         mNotificationManager.notify(0x07, builder.build());
     }
 
+    // set background on wearbale device
+    private void one() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setContentTitle("Onw")
+                .setContentText("You're at step one.")
+                .setSmallIcon(R.drawable.bg_eliza)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.bg_eliza));
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(0x08, builder.build());
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
