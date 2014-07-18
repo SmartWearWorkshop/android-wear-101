@@ -2,6 +2,8 @@ package com.mokoversity.mywearapp;
 
 import android.app.Activity;
 import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,7 +22,7 @@ public class MyActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
-        two();
+        three();
     }
 
     private void zero() {
@@ -70,6 +72,28 @@ public class MyActivity extends Activity {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(0x09, notification);
+    }
+
+    // Add action
+    private void three() {
+        // Build an intent for an action
+        Intent actionIntent = new Intent(Intent.ACTION_VIEW);
+        PendingIntent actionPendingIntent = PendingIntent.getActivity(this, 0, actionIntent, 0);
+
+        // Notification with action
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setContentTitle("Three")
+                .setContentText("You're at step three.")
+                .setSmallIcon(R.drawable.bg_eliza)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.bg_eliza))
+                .addAction(R.drawable.ic_full_reply, "Click me", actionPendingIntent);
+
+        Notification notification = new WearableExtender()
+                .extend(builder)
+                .build();
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(0x01, notification);
     }
 
     @Override
