@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.RemoteInput;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -35,7 +36,7 @@ public class MyActivity extends Activity {
 
         mContext = this;
 
-        coupon();
+        choice();
     }
 
     private void zero() {
@@ -144,6 +145,38 @@ public class MyActivity extends Activity {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_CANCEL_CURRENT);
         builder.setContentIntent(pendingIntent);
+
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(0x07, builder.build());
+    }
+
+    private void choice() {
+        // Create an intent for the reply action
+        Intent replyIntent = new Intent(this, MyActivity.class);
+        PendingIntent replyPendingIntent =
+                PendingIntent.getActivity(this, 0, replyIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+
+        String[] choices = { "Yes", "No" };
+
+        RemoteInput remoteInput = new RemoteInput.Builder("reply")
+                .setLabel("Reply")
+                .setChoices(choices)
+                .build();
+
+        NotificationCompat.Action action =
+                new NotificationCompat.Action.Builder(R.drawable.ic_reply_icon,
+                        "Say Yes or No", replyPendingIntent)
+                        .addRemoteInput(remoteInput)
+                        .build();
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setContentTitle("YES&NO")
+                .setContentText(":-)")
+                .setSmallIcon(R.drawable.bg_eliza)
+                .extend(new WearableExtender().addAction(action));
+
 
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
