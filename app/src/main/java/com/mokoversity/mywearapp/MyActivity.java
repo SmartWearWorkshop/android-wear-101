@@ -18,6 +18,7 @@ import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.NotificationCompat.WearableExtender;
+import android.widget.Toast;
 
 public class MyActivity extends Activity {
 
@@ -35,6 +36,15 @@ public class MyActivity extends Activity {
         setContentView(R.layout.activity_my);
 
         mContext = this;
+
+        // Broadcast receiver
+        mFilterWearableReply = new IntentFilter(ACTION_RESPONSE);
+        mWearableReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context arg0, Intent arg1) {
+                Toast.makeText(mContext, "Someone wants to get a coupon.", Toast.LENGTH_LONG).show();
+            }
+        };
 
         choice();
     }
