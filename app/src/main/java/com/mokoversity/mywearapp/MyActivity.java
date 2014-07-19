@@ -46,6 +46,8 @@ public class MyActivity extends Activity {
             }
         };
 
+        registerReceiver(mWearableReceiver, mFilterWearableReply);
+
         choice();
     }
 
